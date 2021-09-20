@@ -1,0 +1,7 @@
+--------------------------
+-- rundem script runner --
+--------------------------
++Help // echo "To run your own scripts edit the file \$XDG_CONFIG_HOME/rundem/runners or ~/.config/rundem/runners"
++Example script // /etc/rundem/example.sh
++Another script // echo "Listing directory contents..." && ls -l
+This is just text

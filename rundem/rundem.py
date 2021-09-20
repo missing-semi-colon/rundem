@@ -28,6 +28,7 @@ from curses_screens import ScriptMenu
 from utils import is_script
 
 EXAMPLE_SCRIPT_PATH = "/etc/rundem/example"
+BOTTOM_TEXT = "q: quit, RETURN: run, e: non-destructive edit"
 
 script_indicator = "+"
 script_seperator = " // "
@@ -153,7 +154,7 @@ def process_file(filepath: str) -> list:
 				script = line[seperator_pos + len(script_seperator):].rstrip("\n")
 				items.append([name, script])
 			else:
-				items.append([line])
+				items.append([line.rstrip("\n")])
 	return items
 
 if __name__ == "__main__":
@@ -163,7 +164,7 @@ if __name__ == "__main__":
 		make_scripts_file_if_needed()
 
 		items = process_file(filepath)
-		s = ScriptMenu(items, script_indicator)
+		s = ScriptMenu(items, script_indicator, BOTTOM_TEXT)
 
 		current_screen = s
 		while current_screen:

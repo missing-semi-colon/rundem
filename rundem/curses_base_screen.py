@@ -119,15 +119,10 @@ class Screen:
 				self._to_end(self.UP)
 			elif key == curses.KEY_RIGHT:
 				self._to_end(self.DOWN)
-			# # Check for newline or carriage return (happens on pressing ENTER)
-			# elif key == 10 or key == 13:
-			# 	if self._select() == True:
-			# 		break
 			elif key == curses.KEY_RESIZE:
 				self._setup()
-			else:
-				if self._select(key) == True:
-					break
+			elif self._select(key) == True:
+				break
 
 			self._display()
 
@@ -196,11 +191,13 @@ class Screen:
 		""" Display the items on window """
 		self.stdscr.erase()
 		for idx, item in enumerate(self.items[self.top:self.top + self.height]):
-			if idx != self.current:
-				self.stdscr.addstr(idx, 0, str(item), curses.color_pair(0))
-			else:
-				# Highlight the cursor's current line
-				self.stdscr.addstr(idx, 0, item, curses.color_pair(1))
+			color_pair_num = 0
+			if idx == self.current:
+				color_pair_num = 1
+			self.stdscr.addstr(
+				idx, 0,
+				str(item)[:self.width - 1],
+				curses.color_pair(color_pair_num) )
 		self.stdscr.refresh()
 
 	def _get_visible_item_count(self) -> int:

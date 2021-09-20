@@ -35,9 +35,14 @@ class ScriptMenu(Screen):
 			otherwise `None`
 		script_indicator: the string prefixed to all script items
 	"""
-	def __init__(self, items: list, script_indicator: str) -> None:
+	def __init__(
+			self,
+			items: list,
+			script_indicator: str,
+			bottom_text: str ) -> None:
 		self.scripts = [item[1] if len(item) >= 2 else None for item in items]
 		self.script_indicator = script_indicator
+		self.bottom_text = bottom_text
 		Screen.__init__(self, [item[0] for item in items])
 
 	def _setup(self) -> None:
@@ -114,7 +119,14 @@ class ScriptMenu(Screen):
 				# Removes SCRIPT_INDICATOR from the start of the text
 				text = item[len(self.script_indicator):]
 				color_pair_num = 3
-			self.stdscr.addstr(idx, 0, text, curses.color_pair(color_pair_num))
+			self.stdscr.addstr(
+				idx, 0,
+				text[:self.width - 1],
+				curses.color_pair(color_pair_num) )
+		# Display bottom text
+		self.stdscr.addstr(
+			self.height - 1, max(0, self.width - len(self.bottom_text) - 1),
+			self.bottom_text[:self.width - 1] )
 		self.stdscr.refresh()
 
 class ScriptRunner:
